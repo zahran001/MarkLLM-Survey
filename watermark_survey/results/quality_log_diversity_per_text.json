@@ -1,0 +1,254 @@
+{
+  "KGW_facebook_opt-125m_c4": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-125m",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.1750552936858398
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.1173059172884827
+    },
+    "delta": 0.05774937639735711
+  },
+  "KGW_facebook_opt-125m_wmt16": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-125m",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.1223963495883396
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.1856083735700034
+    },
+    "delta": -0.06321202398166381
+  },
+  "Unigram_facebook_opt-125m_c4": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-125m",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.8240663752994335
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.1113886877922656
+    },
+    "delta": 0.7126776875071679
+  },
+  "Unigram_facebook_opt-125m_wmt16": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-125m",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 2.2015216940674995
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.169064803980177
+    },
+    "delta": 1.0324568900873226
+  },
+  "EXP_facebook_opt-125m_c4": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-125m",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.6942997716660686
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.2206034107952493
+    },
+    "delta": 0.47369636087081934
+  },
+  "EXP_facebook_opt-125m_wmt16": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-125m",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.5860904050824485
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 1.1750941353525852
+    },
+    "delta": 0.41099626972986325
+  },
+  "KGW_facebook_opt-1.3b_c4": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-1.3b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.7721486614654277
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.5540204315299687
+    },
+    "delta": 0.218128229935459
+  },
+  "KGW_facebook_opt-1.3b_wmt16": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-1.3b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.3639423938050164
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.38632503555363995
+    },
+    "delta": -0.022382641748623533
+  },
+  "Unigram_facebook_opt-1.3b_c4": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-1.3b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.0979463752387988
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.502104758704252
+    },
+    "delta": 0.5958416165345468
+  },
+  "Unigram_facebook_opt-1.3b_wmt16": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-1.3b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.7373393847616811
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.2824398572198839
+    },
+    "delta": 0.45489952754179724
+  },
+  "EXP_facebook_opt-1.3b_c4": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-1.3b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.1219481178245103
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.7686994062158882
+    },
+    "delta": 0.35324871160862215
+  },
+  "EXP_facebook_opt-1.3b_wmt16": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-1.3b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.7565830595298174
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.29870683692159283
+    },
+    "delta": 0.4578762226082246
+  },
+  "KGW_facebook_opt-2.7b_c4": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-2.7b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.7790037403760646
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.4792278182754462
+    },
+    "delta": 0.2997759221006184
+  },
+  "KGW_facebook_opt-2.7b_wmt16": {
+    "algorithm": "KGW",
+    "model": "facebook/opt-2.7b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.32441490137852125
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.20267960315469705
+    },
+    "delta": 0.1217352982238242
+  },
+  "Unigram_facebook_opt-2.7b_c4": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-2.7b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.9704325062308646
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.47918773560198197
+    },
+    "delta": 0.49124477062888267
+  },
+  "Unigram_facebook_opt-2.7b_wmt16": {
+    "algorithm": "Unigram",
+    "model": "facebook/opt-2.7b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.40995063760417
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.16320409928562843
+    },
+    "delta": 0.24674653831854157
+  },
+  "EXP_facebook_opt-2.7b_c4": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-2.7b",
+    "dataset": "c4",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 1.095204941231203
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.6152464408406337
+    },
+    "delta": 0.4799585003905693
+  },
+  "EXP_facebook_opt-2.7b_wmt16": {
+    "algorithm": "EXP",
+    "model": "facebook/opt-2.7b",
+    "dataset": "wmt16",
+    "wm": {
+      "n": 100,
+      "mean_log_diversity": 0.6743372659108624
+    },
+    "uwm": {
+      "n": 100,
+      "mean_log_diversity": 0.2539424897809042
+    },
+    "delta": 0.4203947761299582
+  }
+}

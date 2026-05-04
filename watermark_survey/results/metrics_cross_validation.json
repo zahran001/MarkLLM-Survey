@@ -1,0 +1,16 @@
+{
+  "control_combo": "KGW_facebook_opt-1.3b_c4",
+  "METRICS FUNCTION": {
+    "tpr_at_fpr": 0.99,
+    "f1_at_fpr": 0.9519230769230769,
+    "tpr_at_best": 0.99,
+    "f1_at_best": 0.99
+  },
+  "markllm": {
+    "tpr_at_fpr": 0.99,
+    "f1_at_fpr": 0.9519230769230769,
+    "tpr_at_best": 0.99,
+    "f1_at_best": 0.99
+  },
+  "max_abs_diff": 0.0
+}
