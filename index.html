@@ -95,19 +95,6 @@
       margin: 0 auto;
     }
 
-    .tag {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-soft);
-      padding: 0.2em 0.7em;
-      border-radius: 4px;
-      margin-bottom: 1.1rem;
-    }
-
     h1 {
       font-family: Georgia, "Times New Roman", Times, serif;
       font-size: 2.25rem;
@@ -337,7 +324,6 @@
   <!-- ── Header ─────────────────────────────────────────────────── -->
   <header>
     <div class="header-inner">
-      <span class="tag">NLP &middot; Security &middot; Empirical Study</span>
       <h1>Evaluating LLM Watermarking Robustness Across Model Scales</h1>
       <p class="subtitle">When does watermarking break? An empirical scale-floor study across three algorithms and three OPT model sizes.</p>
       <p class="authors">Zahran Yahia Khan &nbsp;&middot;&nbsp; Sofia Cobo Navas</p>
@@ -362,8 +348,8 @@
           framework. Our central finding is that the low-entropy "scale floor" problem is
           <strong>algorithm-specific</strong>: KGW fails on OPT-125M (TPR&nbsp;=&nbsp;0.09 at 10% FPR)
           while Unigram and EXP achieve near-perfect detection at the same scale. GPT-3.5 paraphrasing is
-          by far the most damaging attack — but Unigram is markedly more paraphrase-resistant and imposes
-          the lowest perplexity cost, making it the strongest practical choice under adversarial deployment.
+          by far the most damaging attack, yet Unigram remains markedly more paraphrase-resistant and
+          imposes the lowest perplexity cost, making it the strongest practical choice under adversarial deployment.
         </p>
       </section>
 
@@ -393,7 +379,7 @@
             <p>
               KGW fails to embed reliably on OPT-125M (TPR&nbsp;=&nbsp;0.09 on C4, 0.16 on WMT16) due to
               the low-entropy embedding problem. Unigram and EXP, with different embedding mechanisms, are
-              immune to this failure mode. Above the scale floor, detectability plateaus — going from 1.3B
+              immune to this failure mode. Above the scale floor, detectability plateaus: going from 1.3B
               to 2.7B yields no measurable benefit.
             </p>
           </article>
@@ -403,7 +389,7 @@
             <p>
               Lexical attacks (word deletion, synonym substitution) leave detection largely intact
               (&le;&nbsp;6&nbsp;pp average TPR drop). GPT-3.5 paraphrasing causes a 57.6&nbsp;pp average
-              TPR drop — roughly 9&times; more damaging. Both KGW and EXP suffer comparably; the shared
+              TPR drop, roughly 9&times; more damaging than lexical attacks. Both KGW and EXP suffer comparably; the shared
               vulnerability is prefix-context dependence, not the embedding mechanism itself.
             </p>
           </article>
@@ -454,13 +440,12 @@
   <!-- ── Footer ─────────────────────────────────────────────────── -->
   <footer>
     <div class="footer-inner">
-      <p>Survey project for [Course Name / Semester] &mdash; University of South Florida</p>
       <nav class="footer-links" aria-label="Footer links">
         <a href="https://github.com/zahran001/MarkLLM-Survey">GitHub Repository</a>
         <a href="report.pdf">Paper (PDF)</a>
-        <a href="mailto:[your-email@example.com]">Contact</a>
+        <a href="https://www.linkedin.com/in/zahran-yahia/">Contact</a>
       </nav>
-      <p style="margin-top:1rem;">&copy; 2026 Zahran Yahia Khan, Sofia Cobo Navas</p>
+      <p style="margin-top:1rem;">&copy; 2026 Zahran Yahia Khan</p>
     </div>
   </footer>
 
