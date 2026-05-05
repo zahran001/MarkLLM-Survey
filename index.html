@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Evaluating LLM Watermarking Robustness Across Model Scales</title>
+
+  <meta name="description" content="We benchmark KGW, Unigram, and EXP watermarking across OPT-125M/1.3B/2.7B models and three adversarial attacks. Key finding: Unigram is the strongest practical choice under paraphrase attacks." />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article" />
+  <meta property="og:url"         content="https://zahran001.github.io/MarkLLM-Survey/" />
+  <meta property="og:title"       content="Evaluating LLM Watermarking Robustness Across Model Scales" />
+  <meta property="og:description" content="An empirical scale-floor study across three watermarking algorithms, three OPT model sizes, and three adversarial attacks. Unigram wins under paraphrasing." />
+  <meta property="og:image"       content="https://zahran001.github.io/MarkLLM-Survey/assets/detectability-1.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Evaluating LLM Watermarking Robustness Across Model Scales" />
+  <meta name="twitter:description" content="An empirical scale-floor study across three watermarking algorithms, three OPT model sizes, and three adversarial attacks." />
+  <meta name="twitter:image"       content="https://zahran001.github.io/MarkLLM-Survey/assets/detectability-1.png" />
+
+  <!-- Inline SVG favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a4f7a'/><rect x='8' y='22' width='4' height='6' fill='%23fff'/><rect x='14' y='16' width='4' height='12' fill='%23fff' opacity='.75'/><rect x='20' y='10' width='4' height='18' fill='%23fff' opacity='.5'/></svg>" />
+
+  <style>
+    /* ── Custom Properties ────────────────────────────────────── */
+    :root {
+      --accent:      #1a4f7a;
+      --accent-mid:  #2468a0;
+      --accent-soft: #e8f0f8;
+      --bg:          #ffffff;
+      --bg-card:     #f8f9fa;
+      --text:        #1a1a1a;
+      --text-muted:  #555555;
+      --border:      #d8dde3;
+      --max-w:       760px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --accent:      #5ba0d8;
+        --accent-mid:  #82bce8;
+        --accent-soft: #1a2a38;
+        --bg:          #0f1117;
+        --bg-card:     #181c24;
+        --text:        #e8eaed;
+        --text-muted:  #9aa3af;
+        --border:      #2c3240;
+      }
+    }
+
+    /* ── Reset ────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Base ─────────────────────────────────────────────────── */
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* ── Layout ───────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      margin-top: 3.5rem;
+    }
+
+    /* ── Header ───────────────────────────────────────────────── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+
+    .header-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2em 0.7em;
+      border-radius: 4px;
+      margin-bottom: 1.1rem;
+    }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+
+    .authors {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .affiliation {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      border: 2px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-mid);
+      border-color: var(--accent-mid);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-soft);
+    }
+
+    /* ── Section headings ─────────────────────────────────────── */
+    h2 {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+
+    /* ── TL;DR ────────────────────────────────────────────────── */
+    .tldr p {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .tldr strong {
+      color: var(--accent);
+    }
+
+    /* ── Figure ───────────────────────────────────────────────── */
+    .figure-block {
+      margin-top: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .figure-block img {
+      display: block;
+      width: 100%;
+      height: auto;
+      /* Show a soft placeholder background when image is missing */
+      min-height: 220px;
+      background: var(--bg-card);
+    }
+
+    .figure-caption {
+      padding: 0.85rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .figure-caption strong {
+      color: var(--text);
+    }
+
+    /* ── Findings grid ────────────────────────────────────────── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    article.card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.2rem;
+    }
+
+    article.card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    article.card p {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Reproducibility callout ──────────────────────────────── */
+    .callout {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+      background: var(--bg-card);
+    }
+
+    .callout p {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      margin-top: 5rem;
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Mobile ───────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .findings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        margin-top: 2.75rem;
+      }
+
+      header {
+        padding: 2.25rem 1.25rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <header>
+    <div class="header-inner">
+      <span class="tag">NLP &middot; Security &middot; Empirical Study</span>
+      <h1>Evaluating LLM Watermarking Robustness Across Model Scales</h1>
+      <p class="subtitle">When does watermarking break? An empirical scale-floor study across three algorithms and three OPT model sizes.</p>
+      <p class="authors">Zahran Yahia Khan &nbsp;&middot;&nbsp; Sofia Cobo Navas</p>
+      <p class="affiliation">University of South Florida</p>
+      <div class="btn-group">
+        <a href="report.pdf" class="btn btn-primary">Read the Paper (PDF)</a>
+        <a href="https://github.com/zahran001/MarkLLM-Survey" class="btn btn-secondary">View the Code</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main content ───────────────────────────────────────────── -->
+  <main>
+    <div class="container">
+
+      <!-- TL;DR -->
+      <section class="tldr" aria-labelledby="tldr-heading">
+        <h2 id="tldr-heading">TL;DR</h2>
+        <p>
+          We benchmark three LLM watermarking algorithms (KGW, Unigram, EXP) across three OPT model scales
+          (125M, 1.3B, 2.7B), two datasets (C4, WMT16), and three adversarial attacks using the MarkLLM
+          framework. Our central finding is that the low-entropy "scale floor" problem is
+          <strong>algorithm-specific</strong>: KGW fails on OPT-125M (TPR&nbsp;=&nbsp;0.09 at 10% FPR)
+          while Unigram and EXP achieve near-perfect detection at the same scale. GPT-3.5 paraphrasing is
+          by far the most damaging attack — but Unigram is markedly more paraphrase-resistant and imposes
+          the lowest perplexity cost, making it the strongest practical choice under adversarial deployment.
+        </p>
+      </section>
+
+      <!-- Figure 1 -->
+      <section aria-labelledby="fig1-heading">
+        <h2 id="fig1-heading">Detectability Across Scales</h2>
+        <figure class="figure-block">
+          <img
+            src="assets/detectability-1.png"
+            alt="Bar chart showing True Positive Rate at 10% False Positive Rate for KGW, Unigram, and EXP algorithms across OPT-125M, OPT-1.3B, and OPT-2.7B model sizes on C4 and WMT16 datasets. KGW collapses to near-chance at OPT-125M while Unigram and EXP maintain near-perfect detection."
+          />
+          <figcaption class="figure-caption">
+            <strong>Figure 1.</strong> Detectability across model scales (TPR at 10% FPR). KGW collapses
+            to chance at OPT-125M while Unigram and EXP retain near-perfect detection. Above 125M, all
+            three algorithms plateau.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- Key Findings -->
+      <section aria-labelledby="findings-heading">
+        <h2 id="findings-heading">Key Findings</h2>
+        <div class="findings-grid">
+
+          <article class="card">
+            <h3>Algorithm-Specific Scale Floor</h3>
+            <p>
+              KGW fails to embed reliably on OPT-125M (TPR&nbsp;=&nbsp;0.09 on C4, 0.16 on WMT16) due to
+              the low-entropy embedding problem. Unigram and EXP, with different embedding mechanisms, are
+              immune to this failure mode. Above the scale floor, detectability plateaus — going from 1.3B
+              to 2.7B yields no measurable benefit.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Paraphrasing Is the Dominant Attack</h3>
+            <p>
+              Lexical attacks (word deletion, synonym substitution) leave detection largely intact
+              (&le;&nbsp;6&nbsp;pp average TPR drop). GPT-3.5 paraphrasing causes a 57.6&nbsp;pp average
+              TPR drop — roughly 9&times; more damaging. Both KGW and EXP suffer comparably; the shared
+              vulnerability is prefix-context dependence, not the embedding mechanism itself.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Unigram Is the Deployment Winner</h3>
+            <p>
+              Unigram is paraphrase-resistant by a factor of nearly two (36&nbsp;pp drop vs. 67–70&nbsp;pp
+              for KGW/EXP), retains TPR&nbsp;=&nbsp;0.92 on OPT-2.7B&nbsp;+&nbsp;C4 even after
+              paraphrasing, and imposes the lowest perplexity cost across scales. It is also the simplest
+              of the three algorithms.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Figure 3 -->
+      <section aria-labelledby="fig3-heading">
+        <h2 id="fig3-heading">Robustness to Paraphrasing</h2>
+        <figure class="figure-block">
+          <img
+            src="assets/paraphrase-1.png"
+            alt="Chart showing surviving watermark detection rate (TPR) after GPT-3.5 paraphrasing attack for KGW, Unigram, and EXP across OPT-1.3B and OPT-2.7B models on C4 and WMT16 datasets. Unigram consistently dominates with the highest surviving detection rate."
+          />
+          <figcaption class="figure-caption">
+            <strong>Figure 3.</strong> Surviving detection after GPT-3.5 paraphrasing. Unigram dominates
+            across all model–dataset combinations.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- Reproducibility -->
+      <section aria-labelledby="repro-heading">
+        <h2 id="repro-heading">Reproducibility</h2>
+        <div class="callout">
+          <p>
+            All 3,600 generated samples, attack outputs, and detection scores are checked into the
+            repository. The full pipeline replays in approximately 30&nbsp;minutes on a Colab T4 without
+            rerunning the 3-hour generation phase. See the README for instructions.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <p>Survey project for [Course Name / Semester] &mdash; University of South Florida</p>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="https://github.com/zahran001/MarkLLM-Survey">GitHub Repository</a>
+        <a href="report.pdf">Paper (PDF)</a>
+        <a href="mailto:[your-email@example.com]">Contact</a>
+      </nav>
+      <p style="margin-top:1rem;">&copy; 2026 Zahran Yahia Khan, Sofia Cobo Navas</p>
+    </div>
+  </footer>
+
+</body>
+</html>
